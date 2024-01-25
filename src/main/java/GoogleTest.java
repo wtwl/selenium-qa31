@@ -6,6 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class GoogleTest {
 
@@ -14,16 +16,26 @@ public class GoogleTest {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\std\\Downloads\\chromedriver-win64\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
 
+        // Объявление переменной webdriver wait
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
         driver.get("https://the-internet.herokuapp.com/dynamic_controls");
 
-        WebElement textInput = driver.findElement(By.cssSelector("#input-example input"));
+        WebElement input = driver.findElement(By.cssSelector("#input-example input"));
         WebElement enableButton = driver.findElement(By.cssSelector("#input-example button"));
-
         enableButton.click();
 
-        Thread.sleep(10000);
-        textInput.sendKeys("Test");
-        System.out.println(textInput.getAttribute("value"));
+        /*
+        * Ждём пока элемент (input) не станет кликабельный, и только потом
+        * возвращаем его в переменную input
+        * */
+        input = wait.until(
+                ExpectedConditions.elementToBeClickable(input)
+        );
+
+        input.sendKeys("Test");
+
+        assert input.getAttribute("value").equals("Test");
 
         driver.close();
     }

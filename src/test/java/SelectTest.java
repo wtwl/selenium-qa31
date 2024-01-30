@@ -1,27 +1,21 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
-public class GoogleTest {
-
+public class SelectTest {
     public static void main(String[] args) {
-
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\std\\Downloads\\chromedriver-win64\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
 
-        driver.get("https://www.google.ru/");
+        driver.get("https://the-internet.herokuapp.com/dropdown");
 
-        WebElement googleInput = driver.findElement(By.cssSelector(".gLFyf"));
+        WebElement dropdown = driver.findElement(By.cssSelector("#dropdown"));
+        Select dropdownSelect = new Select(dropdown);
 
-        googleInput.sendKeys("Фильмы");
-        googleInput.sendKeys(Keys.ENTER);
+        dropdownSelect.selectByVisibleText("Option 2");
 
-        String a = "asda";
-
-        driver.close();
+        driver.quit();
     }
-
-
 }

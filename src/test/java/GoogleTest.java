@@ -1,8 +1,7 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GoogleTest {
 
@@ -10,17 +9,35 @@ public class GoogleTest {
 
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\std\\Downloads\\chromedriver-win64\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
 
-        driver.get("https://www.google.ru/");
+        driver.get("https://the-internet.herokuapp.com/javascript_alerts");
 
-        WebElement googleInput = driver.findElement(By.cssSelector(".gLFyf"));
+        //работа с js алёртами
+        WebElement jsAlert = driver.findElement(By.xpath("//button[text()='Click for JS Alert']"));
+        WebElement jsConfirm = driver.findElement(By.xpath("//button[text()='Click for JS Confirm']"));
+        WebElement jsPrompt = driver.findElement(By.xpath("//button[text()='Click for JS Prompt']"));
+        jsPrompt.click();
 
-        googleInput.sendKeys("Фильмы");
-        googleInput.sendKeys(Keys.ENTER);
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 
-        String a = "asda";
+        System.out.println(alert.getText());
+        alert.sendKeys("123213141");
+        alert.accept();
 
-        driver.close();
+        // Работа с окнами(вкладками)
+        String originalWindow = driver.getWindowHandle();
+
+        for (String currentWindow : driver.getWindowHandles()) {
+            if (!currentWindow.equals(originalWindow)) {
+                driver.switchTo().window(currentWindow);
+                break;
+            }
+        }
+
+
+        // jsAlert()
+        //driver.close();
     }
 
 

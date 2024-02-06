@@ -4,8 +4,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
+import pages.LoginPage;
 
-public class BingTest {
+public class LoginTest {
     protected WebDriver driver;
     protected WebElement usernameInput;
     protected WebElement passwordInput;
@@ -55,25 +56,26 @@ public class BingTest {
         assert successMessage.contains("You logged into a secure area!");
     }
 
-    @Test
-    public void checkIncorrectUser() {
-        usernameInput.sendKeys("toms");
-        passwordInput.sendKeys("SuperSecretPassword!");
+    @Test(dataProvider = "credentials")
+    public void negativeCheck(String username, String password, String message) {
+        usernameInput.sendKeys(username);
+        passwordInput.sendKeys(password);
         loginButton.click();
 
         String successMessage = driver.findElement(By.cssSelector(".flash.error")).getText();
 
-        assert successMessage.contains("Your username is invalid!");
+        assert successMessage.contains(message);
     }
 
-    @Test
-    public void checkIncorrectPassword() {
-        usernameInput.sendKeys("tomsmith");
-        passwordInput.sendKeys("SuperSecretPassword");
-        loginButton.click();
-
-        String successMessage = driver.findElement(By.cssSelector(".flash.error")).getText();
-
-        assert successMessage.contains("Your password is invalid!");
+    @DataProvider(name = "credentials")
+    public Object[][] myDataProvider() {
+        return new Object[][] {
+                { "toms", "SuperSecretPassword!",  "Your username is invalid!" },
+                { "tomsmith", "SuperSecretPassword",  "Your password is invalid!" },
+                { "", "123",  "Your username is invalid!" },
+                { "21312", "",  "Your username is invalid!" },
+                { "dada", "sada",  "Your username is invalid!" },
+        };
     }
+
 }

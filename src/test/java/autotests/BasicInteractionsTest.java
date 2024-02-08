@@ -41,6 +41,8 @@ public class BasicInteractionsTest {
 
         usernameInput.sendKeys("tomsmith");  // Ввод значения в поле ввода
         loginButton.click(); // Клик по элементу
+
+        chrome.quit(); // закрыть вебдрайвер
     }
 
 

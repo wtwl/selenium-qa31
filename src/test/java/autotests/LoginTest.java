@@ -69,6 +69,13 @@ public class LoginTest {
         assert successMessage.contains(message);
     }
 
+    @Test(dataProvider = "credentials")
+    public void negativeChe2ck(String username, String password, String message) {
+        WebDriver driver = new ChromeDriver();
+        LoginPage loginPage = new LoginPage(driver);
+
+    }
+
     @DataProvider(name = "credentials")
     public Object[][] myDataProvider() {
         return new Object[][] {
